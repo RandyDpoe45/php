@@ -14,6 +14,17 @@
                 
         }
 
+        public function comprarTC($numTarjeta, $cantidadCuotas, $valorCompra){
+            $sql = "insert into transacciontarjeta (TarjetaID, Cuotas, Valor) values ($numTarjeta, $cantidadCuotas, $valorCompra)";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            if($resultado){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
         public function consignacionCuenta($numCuenta, $valor){
             $sql = "select * from cuentaahorros where NumCuenta = $numCuenta";
             $resultado = mysqli_query($this->getConection(), $sql);

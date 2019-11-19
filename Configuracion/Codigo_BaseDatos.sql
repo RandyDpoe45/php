@@ -1,3 +1,4 @@
+DROP TABLE TransaccionTarjeta;
 DROP TABLE TarjetaCredito;
 DROP TABLE CuentaAhorros;
 DROP TABLE Credito;
@@ -68,6 +69,17 @@ CREATE TABLE Mensaje(
 	on delete cascade
 );
 
+CREATE TABLE TransaccionTarjeta(
+	ID int not null AUTO_INCREMENT,
+	PRIMARY KEY (ID),
+	TarjetaID INT,
+	Cuotas INT,
+	Valor FLOAT,
+	FOREIGN KEY (TarjetaID) REFERENCES TarjetaCredito (ID)
+);
 
 insert into Usuario(UserName, Password, type) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');
 insert into Usuario(UserName, Password, type) values ('Admin', 'prz/88u.WZ0LU', 'Administrador');
+
+select * from tarjetacredito inner join cuentaahorros on tarjetacredito.idCuenta = cuentaahorros.NumCuenta where UserID = 1
+inner join usuario on cuentaahorros.UserID = usuario.ID
