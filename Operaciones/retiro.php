@@ -5,8 +5,9 @@
         $dataBase = new DB();
 
         if(isset($_POST["cuentaRetiro"])){
-            if(isset($_POST["valorRetiro"])){
-                $resultado = $dataBase->retiroCuenta($_POST["cuentaRetiro"], $_POST["valorRetiro"]);
+            if(isset($_POST["valRetiro"])){
+                $resultado = $dataBase->retiroCuenta($_POST["cuentaRetiro"], $_POST["valRetiro"]);
+                //echo "<p><script>alert(\"PUES PARECE QUE ES $resultado\"</script>";
                 if($resultado){
                     echo "<script>alert(\"Retiro exitoso\");</script>";
                 }
