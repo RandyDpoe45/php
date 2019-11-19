@@ -1,15 +1,17 @@
+DROP TABLE TarjetaCredito;
 DROP TABLE CuentaAhorros;
+DROP TABLE Credito;
+DROP TABLE mensaje;
 DROP TABLE Usuario;
 DROP TABLE Visitante;
-DROP TABLE Credito;
-DROP TABLE TarjetaCredito;
+
 
 CREATE TABLE Usuario(
     ID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(ID),
     UserName VARCHAR(255) ,
     Password VARCHAR(255),
-    Tipo VARCHAR(255),
+    type VARCHAR(255),
 	CONSTRAINT uc_name unique (UserName)
 );
 
@@ -20,12 +22,12 @@ CREATE TABLE Visitante(
 );
 
 CREATE TABLE CuentaAhorros(
-    ID int not null AUTO_INCREMENT,
-	PRIMARY KEY (ID),
-	ID_Usuario int,
-	javeCoins float default 0,
+    NumCuenta int not null AUTO_INCREMENT,
+	PRIMARY KEY (NumCuenta),
+	UserID int,
+	JaveCoins float default 0,
 	cuotaManejo float default 0,
-	FOREIGN KEY (ID_Usuario) references Usuario (ID)
+	FOREIGN KEY (UserID) references Usuario (ID)
 	ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -36,6 +38,7 @@ create table Credito(
 	idUsuario int,
 	cedulaVisitante VARCHAR (255),
 	cuotaManejo float default 0,
+	aprobado BOOLEAN default FALSE,
 	FOREIGN KEY (idUsuario) references Usuario (ID)
 	ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (cedulaVisitante) references Visitante (cedula)
@@ -52,17 +55,18 @@ CREATE TABLE TarjetaCredito(
 	tasaInteres float default 0,
 	aprobada BOOLEAN default FALSE,
 	
-	FOREIGN KEY (idCuenta) references CuentaAhorros (ID) ON DELETE CASCADE
+	FOREIGN KEY (idCuenta) references CuentaAhorros (NumCuenta) ON DELETE CASCADE
 );
 
 CREATE TABLE Mensaje(
+	mensaje char(255),
 	idremitido int,
 	idRemitente int,
 	FOREIGN KEY (idremitido) references Usuario (ID)
 	on delete cascade,
 	FOREIGN KEY (idRemitente) references Usuario (ID)
 	on delete cascade
-	
 );
+
 insert into Usuario(UserName, Password, Tipo) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');
 insert into Usuario(UserName, Password, Tipo) values ('Admin', 'prz/88u.WZ0LU', 'Administrador');
