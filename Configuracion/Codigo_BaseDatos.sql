@@ -34,7 +34,7 @@ CREATE TABLE CuentaAhorros(
 create table Credito(
 	ID int not null AUTO_INCREMENT,
 	PRIMARY KEY (ID),
-	tasaInteres float,
+	tasaInteres float DEFAULT 10,
 	idUsuario int,
 	cedulaVisitante VARCHAR (255),
 	cuotaManejo float default 0,

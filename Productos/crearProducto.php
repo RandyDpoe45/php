@@ -11,6 +11,7 @@
             echo "VAMOS POR UNA CUENTA";
             $resultado = $dataBase->crearCuentaAhorros($_SESSION["ID"]);
             echo "<h2>$resultado</h2>";
+            echo "<script>alert(\"Cuenta de ahorros creada correctamente\");</script>";
         }
 
         if($_POST['tipoProducto'] == "Credito"){
@@ -21,6 +22,8 @@
             echo "VAMOS POR UNA TARJETA";
         }
         
+        
+        header(dirname(__FILE__).'solicitarProducto');
     }
     else{
         header(dirname(__FILE__).'solicitarProducto');

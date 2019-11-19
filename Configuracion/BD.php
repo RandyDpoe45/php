@@ -36,6 +36,36 @@
             
         }
 
+        public function crearTarjeta($idCuenta){
+            $sql = "insert into tarjetacredito (idCuenta) values ($idCuenta)";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            if($resultado){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        public function nombreUsuario($id){
+            $sql = "SELECT userName FROM usuario WHERE ID = $id";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            $fila = mysqli_fetch_array($resultado);
+            return $fila["userName"];
+        }
+
+        public function crearMensaje($para, $mensaje){
+            $usuario = $_SESSION["ID"];
+            $sql = "insert into mensaje (mensaje, idremitido, idRemitente) values ('$mensaje', $para, $usuario)";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            if($resultado){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
         public function usuarioExiste($userName){
             $sql = "select * from usuario where userName = '$userName'";
 
@@ -68,6 +98,60 @@
             }
 
             
+        }
+
+        public function getCuentas(){
+            $UserID = $_SESSION["ID"];
+            $sql = "select * from cuentaAhorros where UserID = $UserID";
+            $resultado = mysqli_query($this->getConection(), $sql);
+
+            $return = array();
+
+            while($fila = mysqli_fetch_array($resultado1)) {
+                array_push($return, $fila["NumCuenta"]);
+            }
+
+            
+
+
+            return $return;
+        }
+
+        public function crearCreditoVisitante($cedula, $email){
+            $buscarVisitante = "select * from Visitante where cedula = '$cedula'";
+            $resultado1 = mysqli_query($this->getConection(), $buscarVisitante);
+            $cantidadCol = 0;
+            while($fila = mysqli_fetch_array($resultado1)) {
+                $cantidadCol = $cantidadCol + 1;
+            }
+            if($cantidadCol == 0){
+                $crearVisitante = "insert into Visitante (cedula, correo) values ('$cedula', '$email')";
+                $resultado2 = mysqli_query($this->getConection(), $crearVisitante);
+            }
+
+            $sql = "insert into credito (cedulaVisitante) values ('$cedula')";
+            $resultado3 = mysqli_query($this->getConection(), $sql);
+
+            if($resultado3){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+        public function crearCreditoCliente($tasaInteres){
+            $IdUsuario = $_SESSION["ID"];
+            $sql = "insert into credito (tasaInteres, idUsuario) values ($tasaInteres, $IdUsuario)";
+
+            $resultado3 = mysqli_query($this->getConection(), $sql);
+
+            if($resultado3){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 
         public function comprobarLogin($userName, $password){
