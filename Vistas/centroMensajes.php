@@ -56,7 +56,7 @@
                     $sql = "select * from mensaje where idremitido = $UserID";
                     $resultado = mysqli_query($conexion, $sql);
                     while($fila = mysqli_fetch_array($resultado)) {
-                        $usuario = $dataBase->nombreUsuario($fila["idremitido"]);
+                        $usuario = $dataBase->nombreUsuario($fila["idRemitente"]);
                         $mensaje = $fila["mensaje"];
                         echo "<option>FROM: $usuario MESSAGE: $mensaje </option>";
                     }

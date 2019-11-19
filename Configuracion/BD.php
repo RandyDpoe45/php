@@ -14,6 +14,26 @@
                 
         }
 
+        public function retiroCuenta($numCuenta, $valorRetiro){
+            $myUsuario = $_SESSION["ID"];
+
+            $sql = "select * from cuentaahorros where NumCuenta = $numCuenta";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            $fila = mysqli_fetch_array($resultado);
+            $valorActual = $fila["JaveCoins"];
+
+            if($valorActual < $valorRetiro){
+                return false;
+            }
+            else{
+                $valorRestante = $valorActual - $valorRetiro;
+                $sqlActualizar = "UPDATE cuentaahorros SET JaveCoins = $valorRestante where NumCuenta = $numCuenta";
+                $resultado2 = mysqli_query($this->getConection(), $sqlActualizar);
+            }
+            return true;
+        
+        }
+
         public function getConection(){
             return $this->conection;
         }

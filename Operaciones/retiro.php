@@ -1,11 +1,30 @@
 <h2>Retiros</h2>
 
+    <?php
+    
+        $dataBase = new DB();
+
+        if(isset($_POST["cuentaRetiro"])){
+            if(isset($_POST["valorRetiro"])){
+                $resultado = $dataBase->retiroCuenta($_POST["cuentaRetiro"], $_POST["valorRetiro"]);
+                if($resultado){
+                    echo "<script>alert(\"Retiro exitoso\");</script>";
+                }
+                else{
+                    $valorRetiro = $_POST["valorRetiro"];
+                    $numCuenta = $_POST["cuentaRetiro"];
+                    echo "<script>alert(\"No se puede retirar $valorRetiro de la cuenta $numCuenta\");</script>";
+                }
+            }
+        }
+
+    ?>
 
     <form action="" method="post">
         <div class="form-row">
             <div class="col">
                 <label>Seleccione la cuenta</label>
-                <select class="form-control" name="cuenta"> 
+                <select class="form-control" name="cuentaRetiro"> 
 
                     <?php
                         $UserID = $_SESSION["ID"];
@@ -23,7 +42,7 @@
 
             <div class="col">
                 <label>Valor a retirar</label>
-                <input type="text" class="form-control" placeholder="Valor a retirar">
+                <input type="text" class="form-control" name="valRetiro" placeholder="Valor a retirar">
             </div>
             
         </div>
