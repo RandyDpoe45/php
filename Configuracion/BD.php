@@ -14,6 +14,23 @@
                 
         }
 
+        public function consignacionCuenta($numCuenta, $valor){
+            $sql = "select * from cuentaahorros where NumCuenta = $numCuenta";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            $fila = mysqli_fetch_array($resultado);
+            $valorActual = $fila["JaveCoins"];
+
+            $valorTotal = $valorActual + $valor;
+            $sqlActualizar = "UPDATE cuentaahorros SET JaveCoins = $valorTotal where NumCuenta = $numCuenta";
+            $resultado2 = mysqli_query($this->getConection(), $sqlActualizar);
+            if($resultado2){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
         public function retiroCuenta($numCuenta, $valorRetiro){
             $myUsuario = $_SESSION["ID"];
 

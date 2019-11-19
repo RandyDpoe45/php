@@ -68,5 +68,6 @@ CREATE TABLE Mensaje(
 	on delete cascade
 );
 
+
 insert into Usuario(UserName, Password, type) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');
 insert into Usuario(UserName, Password, type) values ('Admin', 'prz/88u.WZ0LU', 'Administrador');

@@ -12,7 +12,7 @@
                     echo "<script>alert(\"Retiro exitoso\");</script>";
                 }
                 else{
-                    $valorRetiro = $_POST["valorRetiro"];
+                    $valorRetiro = $_POST["valRetiro"];
                     $numCuenta = $_POST["cuentaRetiro"];
                     echo "<script>alert(\"No se puede retirar $valorRetiro de la cuenta $numCuenta\");</script>";
                 }
