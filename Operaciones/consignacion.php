@@ -12,7 +12,10 @@
                     if($_POST["tipoMoneda"] == "pesos"){
                         $valorConsignacion = ($_POST["valConsignacion"])/1000;
                     }
-                    $resultado = $dataBase->consignacionCuenta($_POST["cuentaConsignacion"], $_POST["valConsignacion"]);
+                    else{
+                        $valorConsignacion = $_POST["valConsignacion"];
+                    }
+                    $resultado = $dataBase->consignacionCuenta($_POST["cuentaConsignacion"], $valorConsignacion);
                     if($resultado){
                         echo "<script>alert(\"Consignacion exitosa\");</script>";
                     }
