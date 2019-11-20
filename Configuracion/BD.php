@@ -1,7 +1,12 @@
 <?php
 
     include_once dirname(__FILE__).'/config.php';
-
+	if(!isset($GLOBALS["cuotaManejoCredito"])){
+		$_["cuotaManejoCredito"] = 12;
+	}
+	if(!isset($GLOBALS["cuotaManejoAhorros"])){
+		$_["cuotaManejoAhorros"] = 10;
+	}
     class DB{
         
     public $conection;
@@ -42,9 +47,12 @@
             }
         }
 
-        public function retiroCuenta($numCuenta, $valorRetiro){
+        public function retiroCuenta($numCuenta, $valorRetiro, $tipoMoneda){
             $myUsuario = $_SESSION["ID"];
-
+			if($tipoMoneda == "coins"){
+				$valorRetiro = $valorRetiro/1000;
+			
+			}
             $sql = "select * from cuentaahorros where NumCuenta = $numCuenta";
             $resultado = mysqli_query($this->getConection(), $sql);
             $fila = mysqli_fetch_array($resultado);

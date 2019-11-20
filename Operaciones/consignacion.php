@@ -12,14 +12,12 @@
                     if($_POST["tipoMoneda"] == "pesos"){
                         $valorConsignacion = ($_POST["valConsignacion"])/1000;
                     }
-                    else{
-                        $valorConsignacion = $_POST["valConsignacion"];
-                    }
-                    $resultado = $dataBase->consignacionCuenta($_POST["cuentaConsignacion"], $valorConsignacion);
+                    $resultado = $dataBase->consignacionCuenta($_POST["cuentaConsignacion"], $_POST["valConsignacion"]);
                     if($resultado){
                         echo "<script>alert(\"Consignacion exitosa\");</script>";
                     }
                     else{
+                        $valorRetiro = $_POST["valConsignacion"];
                         $numCuenta = $_POST["cuentaConsignacion"];
                         echo "<script>alert(\"No se puede realizar la consignacion en la cuenta $numCuenta\");</script>";
                     }
@@ -58,7 +56,7 @@
             </div>
 
             <div>
-                <label>Tipo de mensaje</label>
+                <label>Tipo de moneda</label>
                 <select class="form-control" name="tipoMoneda">
                         <option value="pesos">Pesos</option>
                         <option value="coins">JaveCoins</option>

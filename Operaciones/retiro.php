@@ -6,16 +6,19 @@
 
         if(isset($_POST["cuentaRetiro"])){
             if(isset($_POST["valRetiro"])){
-                $resultado = $dataBase->retiroCuenta($_POST["cuentaRetiro"], $_POST["valRetiro"]);
-                //echo "<p><script>alert(\"PUES PARECE QUE ES $resultado\"</script>";
-                if($resultado){
-                    echo "<script>alert(\"Retiro exitoso\");</script>";
-                }
-                else{
-                    $valorRetiro = $_POST["valRetiro"];
-                    $numCuenta = $_POST["cuentaRetiro"];
-                    echo "<script>alert(\"No se puede retirar $valorRetiro de la cuenta $numCuenta\");</script>";
-                }
+				if(isset($_POST["tipoMoneda"])){
+					$resultado = $dataBase->retiroCuenta($_POST["cuentaRetiro"], $_POST["valRetiro"],$_POST["tipoMoneda"]);
+					//echo "<p><script>alert(\"PUES PARECE QUE ES $resultado\"</script>";
+					if($resultado){
+						echo "<script>alert(\"Retiro exitoso\");</script>";
+					}
+					else{
+						$valorRetiro = $_POST["valRetiro"];
+						$numCuenta = $_POST["cuentaRetiro"];
+						echo "<script>alert(\"No se puede retirar $valorRetiro de la cuenta $numCuenta\");</script>";
+					}
+				}
+                
             }
         }
 
@@ -39,6 +42,14 @@
                     ?>
 
                 </select> 
+            </div>
+			
+			<div>
+                <label>Tipo de moneda</label>
+                <select class="form-control" name="tipoMoneda">
+                        <option value="pesos">Pesos</option>
+                        <option value="coins">JaveCoins</option>
+                </select>
             </div>
 
             <div class="col">
