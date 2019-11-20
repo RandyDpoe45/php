@@ -195,6 +195,9 @@ $str_datos.='<th scope=\"col\">Editar</th>';
 $str_datos.='</tr>';
 $str_datos.='</thead>';
 $str_datos.='<tbody>';
+
+echo $str_datos;
+$str_datos="";
 $sql = "SELECT  c.Id ,c.cupoMaximo,c.sobrecupo,c.tasaInteres, c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
  aprobada = true and u.UserID = $idu ";
 
@@ -208,6 +211,47 @@ $str_datos.="<td>".$fila['sobrecupo']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
 $str_datos.="<td>".$fila['tasaInteres']."</td>";
 $str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=tarj'\">Editar</button></td>";
+$str_datos.= "</tr>";
+}
+$str_datos.='</tbody>';
+$str_datos.= "</table>";
+
+
+$str_datos.="</div>";
+$str_datos.="</div>";
+echo $str_datos;
+
+$str_datos="";
+
+$str_datos.="<div class=\"card \">";
+$str_datos.="  <h5 class=\"card-header h5\">tarjetas de credito </h5>";
+$str_datos.=" <div class=\"card-body\">";
+
+
+
+$str_datos.='<table  class="table table-dark" >';
+$str_datos.='<thead>';
+$str_datos.='<tr>';
+$str_datos.='<th scope=\"col\">numero Cuenta</th>';
+$str_datos.='<th scope=\"col\">jave coins </th>';
+$str_datos.='<th scope=\"col\">cuota de manejo</th>';
+$str_datos.='<th scope=\"col\">Editar</th>';
+$str_datos.='</tr>';
+$str_datos.='</thead>';
+$str_datos.='<tbody>';
+
+echo $str_datos;
+$str_datos="";
+$sql = "SELECT  NumCuenta,JaveCoins, cuotaManejo FROM  cuentaahorros where UserID = $idu ";
+
+$resultado = mysqli_query($con,$sql);
+
+while($fila = mysqli_fetch_array($resultado)) {
+$str_datos.='<tr>';
+$str_datos.="<th scope=\"row\">".$fila['NumCuenta']."</th>";
+$str_datos.= "<td>".$fila['JaveCoins']."</td>";
+$str_datos.="<td>".$fila['cuotaManejo']."</td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['NumCuenta']. "&op=cuenta'\">Editar</button></td>";
 $str_datos.= "</tr>";
 }
 $str_datos.='</tbody>';

@@ -145,6 +145,40 @@ if($_GET["op"]=="cred"){
 				</div>";
 	
 }
+if($_GET["op"]=="cuenta"){
+	$val=$_GET["credito"];
+	$sql = "SELECT * from cuentaahorros where NumCuenta= $val";
+	$fila= mysqli_query($con,$sql);
+	$resultado = mysqli_fetch_array($fila);
+	$_SESSION["idCuen"]=$_GET["credito"];
+	$_SESSION["op"]=$_GET["op"];
+	$val3 =$resultado['cuotaManejo'];
+	$val4=$resultado['JaveCoins'];
+	$str_datos="<div class=\"card\">
+				  <h5 class=\"card-header h5\">Edicion Credito</h5>
+				  <div class=\"card-body\">
+				   
+						<form action=\"guardarCambios.php\" method=\"post\">
+						  
+						  <div class=\"form-group\">
+							<label for=\"recipient-name\" class=\"col-form-label\">Cuota de Manejo:</label>
+							<input type=\"text\" class=\"form-control\" name=\"cuotaManejo\" value=\"$val3\">
+						  </div>
+						  <div class=\"form-group\">
+							<label for=\"message-text\" class=\"col-form-label\">Javecoins:</label>
+							<input type=\"text\" class=\"form-control\" name=\"Javecoins\" value=\"$val4\"></input>
+						  </div>
+						  <div class=\"modal-footer\">
+								<input type=\"submit\" class=\"btn btn-primary\">
+								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'solicitudes.php'\">Cancelar</button>
+							</div>
+						</form>
+					  </div>
+					  
+				  </div>
+				</div>";
+	
+}
 echo $str_datos;
 ?>
 

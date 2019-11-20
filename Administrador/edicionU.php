@@ -98,3 +98,49 @@ mysqli_close($con);
 ?>
 </div>
 </div>
+
+
+<div class="card ">
+  <h5 class="card-header h5">Visitantes</h5>
+  <div class="card-body">	
+	
+<?php
+include_once dirname(__FILE__) . '../../Configuracion/config.php';
+$str_datos = "";
+$con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
+if (mysqli_connect_errno()) {
+$str_datos.= "Error en la conexión: " . mysqli_connect_error();
+}
+
+$str_datos.='<table  class="table table-dark" >';
+$str_datos.='<thead>';
+$str_datos.='<tr>';
+$str_datos.='<th scope=\"col\">Cedula </th>';
+$str_datos.='<th scope=\"col\">Correo</th>';
+$str_datos.='<th scope=\"col\">Editar</th>';
+$str_datos.='</tr>';
+$str_datos.='</thead>';
+$str_datos.='<tbody>';
+$sql = "SELECT Cedula, Correo  FROM Visitante ";
+$resultado = mysqli_query($con,$sql);
+while($fila = mysqli_fetch_array($resultado)) {
+$str_datos.='<tr>';
+$str_datos.="<th scope=\"row\">".$fila['Cedula']."</th>";
+$str_datos.= "<td>".$fila['Correo']."</td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'edicionUsuarios.php?idu=".$fila['Cedula']. "&op=visi'\">Editar</button></td>";
+$str_datos.= "</tr>";
+}
+$str_datos.='</tbody>';
+$str_datos.= "</table>";
+echo $str_datos;
+mysqli_close($con);
+?>
+</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>

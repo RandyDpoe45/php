@@ -53,6 +53,15 @@
 				sendMail($fila["correo"], "Se credito con id $id fue aprobado ¡FELICIDADES!");
 			}
 		}
+	}else if($_SESSION["op"]=="cuenta"){
+		$id = $_SESSION["idCuen"]; 
+		$val2 = $_POST["Javecoins"];
+		$val3 = $_POST["cuotaManejo"];	
+		$sql = "update cuentaahorros set JaveCoins = $val2 ,cuotaManejo = $val3
+		where NumCuenta = $id";
+		mysqli_query($con,$sql);
+		header("location: edicionU.php");
+
 	}
 	
 	header("location: solicitudes.php");
