@@ -32,10 +32,31 @@
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav ml-auto">
+
+        <?php
+          if(!isset($_SESSION["userName"])){
+                echo "<li class=\"nav-item active\">
+                        <a class=\"nav-link\" href=\"Vistas/login.php\">Iniciar Sesión <span class=\"sr-only\">(current)</span></a>
+                      </li>
+                      <li class=\"nav-item active\">
+                        <a class=\"nav-link\" href=\"Vistas/registro.php\">Registrarse <span class=\"sr-only\">(current)</span></a>
+                      </li>";
+          }
+          else{
+            $usuario = $_SESSION["userName"];
+            echo "<li class=\"nav-item active\">
+                    <a class=\"nav-link\" href=\"\">Bienvenido $usuario <span class=\"sr-only\">(current)</span></a>
+                  </li>
+                  <li class=\"nav-item active\">
+                    <a class=\"nav-link\" href=\"Vistas/logOut.php\">Cerrar Sesión <span class=\"sr-only\">(current)</span></a>
+                  </li>";
+          }
+        ?>
+        
+
+
+    </ul>
       </div>
     </nav>
 <?php

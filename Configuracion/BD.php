@@ -2,10 +2,13 @@
 
     include_once dirname(__FILE__).'/config.php';
 	if(!isset($GLOBALS["cuotaManejoCredito"])){
-		$_["cuotaManejoCredito"] = 12;
+		$GLOBALS["cuotaManejoCredito"] = 12;
+	}
+	if(!isset($GLOBALS["tasaInteres"])){
+		$GLOBALS["tasaInteres"] = 0.05;
 	}
 	if(!isset($GLOBALS["cuotaManejoAhorros"])){
-		$_["cuotaManejoAhorros"] = 10;
+		$GLOBALS["cuotaManejoAhorros"] = 10;
 	}
     class DB{
         
@@ -93,7 +96,8 @@
         }
 
         public function crearTarjeta($idCuenta){
-            $sql = "insert into tarjetacredito (idCuenta) values ($idCuenta)";
+			$val2 = $GLOBALS["cuotaManejoAhorros"];
+            $sql = "insert into tarjetacredito (idCuenta,cuotaManejo) values ($idCuenta,$val2)";
             $resultado = mysqli_query($this->getConection(), $sql);
             if($resultado){
                 return true;
@@ -142,7 +146,8 @@
         }
 
         public function crearCuentaAhorros($userId){
-            $sql = "insert into CuentaAhorros (UserID) values ($userId)";
+			$val2 = $GLOBALS["cuotaManejoAhorros"];
+            $sql = "insert into CuentaAhorros (UserID,cuotaManejo) values ($userId,$val2)";
 
             $resultado = mysqli_query($this->getConection(), $sql);
 
@@ -184,8 +189,9 @@
                 $crearVisitante = "insert into Visitante (cedula, correo) values ('$cedula', '$email')";
                 $resultado2 = mysqli_query($this->getConection(), $crearVisitante);
             }
-
-            $sql = "insert into credito (cedulaVisitante) values ('$cedula')";
+			$val = $GLOBALS["tasaInteres"];
+			$val2 = $GLOBALS["cuotaManejoCredito"];
+            $sql = "insert into credito (cedulaVisitante,cuotaManejo,tasaInteres) values ('$cedula',$val2,$val)";
             $resultado3 = mysqli_query($this->getConection(), $sql);
 
             if($resultado3){
@@ -198,7 +204,8 @@
 
         public function crearCreditoCliente($tasaInteres){
             $IdUsuario = $_SESSION["ID"];
-            $sql = "insert into credito (tasaInteres, idUsuario) values ($tasaInteres, $IdUsuario)";
+			$val = $GLOBALS['cuotaManejoCredito'];
+            $sql = "insert into credito (tasaInteres, idUsuario,cuotaManejo) values ($tasaInteres, $IdUsuario,$val)";
 
             $resultado3 = mysqli_query($this->getConection(), $sql);
 

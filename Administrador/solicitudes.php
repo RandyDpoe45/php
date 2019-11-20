@@ -39,6 +39,9 @@
 	
 <main role="main" class="container mt-3 pt-5">
 <div class="my-3 p-3 bg-white rounded box-shadow">
+<div class="card">
+  <h5 class="card-header h5">Solicitudes credito clientes</h5>
+  <div class="card-body">
 <?php
 session_start();
 include_once dirname(__FILE__) . '../../Configuracion/config.php';
@@ -47,14 +50,7 @@ $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
 if (mysqli_connect_errno()) {
 $str_datos.= "Error en la conexión: " . mysqli_connect_error();
 }
-$param = 'Cedula';
-$orden = 'ASC';
-if(isset($_SESSION['parametro'])){
-	$param = $_SESSION['parametro'];
-}
-if(isset($_SESSION['ordenamiento'])){
-	$orden = $_SESSION['ordenamiento'];
-}
+
 $str_datos.='<table  class="table table-dark" >';
 $str_datos.='<thead>';
 $str_datos.='<tr>';
@@ -82,6 +78,103 @@ $str_datos.='</tbody>';
 $str_datos.= "</table>";
 echo $str_datos;
 mysqli_close($con);
+?>
+</div>
+</div>
+
+
+<div class="card">
+  <h5 class="card-header h5">Solicitudes tarjeta de credito </h5>
+  <div class="card-body">
+<?php
+
+include_once dirname(__FILE__) . '../../Configuracion/config.php';
+$str_datos = "";
+$con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
+if (mysqli_connect_errno()) {
+$str_datos.= "Error en la conexión: " . mysqli_connect_error();
+}
+
+$str_datos.='<table  class="table table-dark" >';
+$str_datos.='<thead>';
+$str_datos.='<tr>';
+$str_datos.='<th scope=\"col\">Id prestamo</th>';
+$str_datos.='<th scope=\"col\">Tasa interes</th>';
+$str_datos.='<th scope=\"col\">nombre de usuario </th>';
+$str_datos.='<th scope=\"col\">Cuota manejo</th>';
+$str_datos.='<th scope=\"col\">Aprobar</th>';
+$str_datos.='<th scope=\"col\">Rechazar</th>';
+$str_datos.='</tr>';
+$str_datos.='</thead>';
+$str_datos.='<tbody>';
+$sql = "SELECT  o.Username , c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
+ c.aprobada = false ";
+
+$resultado = mysqli_query($con,$sql);
+echo mysqli_errno($con).":".mysqli_error($con);
+while($fila = mysqli_fetch_array($resultado)) {
+$str_datos.='<tr>';
+$str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
+$str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['cedula']."</td>";
+$str_datos.="<td>".$fila['cuotaManejo']."</td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "'\">Aprobar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
+$str_datos.= "</tr>";
+}
+$str_datos.='</tbody>';
+$str_datos.= "</table>";
+echo $str_datos;
+mysqli_close($con);
+?>
+</div>
+</div>
+
+<div class="card">
+  <h5 class="card-header h5">Solicitudes credito Visitantes</h5>
+  <div class="card-body">
+<?php
+
+include_once dirname(__FILE__) . '../../Configuracion/config.php';
+$str_datos = "";
+$con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
+if (mysqli_connect_errno()) {
+$str_datos.= "Error en la conexión: " . mysqli_connect_error();
+}
+
+$str_datos.='<table  class="table table-dark" >';
+$str_datos.='<thead>';
+$str_datos.='<tr>';
+$str_datos.='<th scope=\"col\">Id prestamo</th>';
+$str_datos.='<th scope=\"col\">Tasa interes</th>';
+$str_datos.='<th scope=\"col\">Cedula </th>';
+$str_datos.='<th scope=\"col\">Cuota manejo</th>';
+$str_datos.='<th scope=\"col\">Aprobar</th>';
+$str_datos.='<th scope=\"col\">Rechazar</th>';
+$str_datos.='</tr>';
+$str_datos.='</thead>';
+$str_datos.='<tbody>';
+$sql = "SELECT c.Id, c.tasaInteres, u.cedula , c.cuotaManejo FROM credito c inner join visitante u on u.cedula = c.cedulaVisitante where c.aprobado = false ";
+$resultado = mysqli_query($con,$sql);
+while($fila = mysqli_fetch_array($resultado)) {
+$str_datos.='<tr>';
+$str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
+$str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['cedula']."</td>";
+$str_datos.="<td>".$fila['cuotaManejo']."</td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "'\">Aprobar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
+$str_datos.= "</tr>";
+}
+$str_datos.='</tbody>';
+$str_datos.= "</table>";
+echo $str_datos;
+mysqli_close($con);
+?>
+</div>
+</div>
+
+
+<?php
+	
 ?>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
