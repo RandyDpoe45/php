@@ -1,3 +1,4 @@
+DROP TABLE Transacciones;
 DROP TABLE TransaccionTarjeta;
 DROP TABLE TarjetaCredito;
 DROP TABLE CuentaAhorros;
@@ -75,11 +76,22 @@ CREATE TABLE TransaccionTarjeta(
 	TarjetaID INT,
 	Cuotas INT,
 	Valor FLOAT,
+	FechaCompra TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	FOREIGN KEY (TarjetaID) REFERENCES TarjetaCredito (ID)
+);
+
+CREATE TABLE Transacciones(
+	ID int not null AUTO_INCREMENT,
+	PRIMARY KEY (ID),
+	BancoOrigen varchar(255),
+	CuentaOrigen INT,
+	CuentaDestino INT,
+	Costo float DEFAULT 0,
+	ValorTransaccion float DEFAULT 0,
+	FechaCompra TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	FOREIGN KEY (CuentaOrigen) REFERENCES cuentaahorros (NumCuenta),
+	FOREIGN KEY (CuentaDestino) REFERENCES cuentaahorros (NumCuenta)
 );
 
 insert into Usuario(UserName, Password, type) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');
 insert into Usuario(UserName, Password, type) values ('Admin', 'prz/88u.WZ0LU', 'Administrador');
-
-select * from tarjetacredito inner join cuentaahorros on tarjetacredito.idCuenta = cuentaahorros.NumCuenta where UserID = 1
-inner join usuario on cuentaahorros.UserID = usuario.ID

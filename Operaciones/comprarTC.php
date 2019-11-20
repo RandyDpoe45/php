@@ -1,16 +1,23 @@
 <h2>Comprar con tarjeta de credito</h2>
+<?php
 
+if(isset($_POST["fechaCompra"])){
+    $fecha = $_POST["fechaCompra"];
+    echo "<h2> la fecha es </h2>";
+}
+?>
     <?php
+
 
         if(isset($_POST["numTarjeta"])){
             if(isset($_POST["valorCompra"])){
                 if(isset($_POST["cantidadCuotas"])){
                     if(isset($_POST["tipoMonedaTC"])){
                         if($_POST["tipoMonedaTC"] == "pesos"){
-                            $valorCompra = ($_POST["valCompra"])/1000;
+                            $valorCompra = (intval($_POST["valorCompra"]))/1000;
                         }
                         else{
-                            $valorCompra = $_POST["valCompra"];
+                            $valorCompra = $_POST["valorCompra"];
                         }
                         $resultado = $dataBase->comprarTC($_POST["numTarjeta"], $_POST["cantidadCuotas"], $valorCompra);
                         if($resultado){
@@ -68,7 +75,7 @@
             </div>
 
 
-            <div>
+            <div class="col">
                 <label>Tipo de moneda</label>
                 <select class="form-control" name="tipoMonedaTC">
                         <option value="pesos">Pesos</option>
@@ -76,6 +83,10 @@
                 </select>
             </div>
             
+            <!-- <div class="col">
+                <label>Fecha compra</label>
+                <input class="form-control" type="date" id="start" name="fechaCompra" min="1999-01-01" max="2030-12-31">
+            </div> -->
         </div>
 
         <button type="submit" class="btn btn-primary">Enviar</button>
