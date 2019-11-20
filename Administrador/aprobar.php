@@ -102,7 +102,7 @@ if($_GET["op"]=="tarj"){
 						  </div>
 						  <div class=\"modal-footer\">
 								<input type=\"submit\" class=\"btn btn-primary\">
-								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'Administrador/solicitudes.php'\">Cancelar</button>
+								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'solicitudes.php'\">Cancelar</button>
 							</div>
 						</form>
 					  </div>
@@ -136,7 +136,7 @@ if($_GET["op"]=="cred"){
 						  </div>
 						  <div class=\"modal-footer\">
 								<input type=\"submit\" class=\"btn btn-primary\">
-								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'Administrador/solicitudes.php'\">Cancelar</button>
+								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'solicitudes.php'\">Cancelar</button>
 							</div>
 						</form>
 					  </div>

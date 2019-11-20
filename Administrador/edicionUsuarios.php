@@ -18,7 +18,7 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="edicionU.php" >Edicion de usuarios</a>
+            <a class="nav-link" href="solicitudes.php" >Solicitudes de credito pendientes</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="../index.php" >Centro Mensajes</a>
@@ -60,141 +60,209 @@
     </ul>
       </div>
     </nav>
-<div class="card ">
-  <h5 class="card-header h5">Solicitudes credito usuarios</h5>
-  <div class="card-body">	
-	
-<?php
-
+	<?php
+$str_datos ="";	
+$idu = $_GET["idu"];
 include_once dirname(__FILE__) . '../../Configuracion/config.php';
-$str_datos = "";
+
 $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
 if (mysqli_connect_errno()) {
 $str_datos.= "Error en la conexión: " . mysqli_connect_error();
 }
+$sql = "select * from usuario where Id = $idu "; 
+$resultado = mysqli_query($con,$sql);
+$fila = mysqli_fetch_array($resultado);
+if($_GET["op"]=="Administrador"){
+	$str_datos.="<div class=\"card \">
+  <h5 class=\"card-header h5\">Edicion usuario</h5>
+  <div class=\"card-body\">";	
+  $val1 = $fila["UserName"];
+  $val2 = $fila["type"];
+  $_SESSION["idu"] = $idu;
+	
+						
+						$str_datos.="<form action=\"guardarCambiosUsuario.php\" method=\"post\">
+						  
+						  
+						  <div class=\"form-group\">
+							<label for=\"message-text\" class=\"col-form-label\">Nombre de usuario:</label>
+							<input type=\"text\" class=\"form-control\" name=\"UserName\" value=\"$val1\"></input>
+						  </div>
+						  <div>
+								<label>Tipo de usuario</label>
+								<select class=\"form-control\" name=\"tipoUsuario\" value=\"Administrador\" >
+										<option value=\"Usuario\">Cliente</option>
+										<option value=\"Administrador\">Administrador</option>
+								</select>
+							</div>
+						  <div class=\"modal-footer\">
+								<input type=\"submit\" class=\"btn btn-primary\">
+								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'solicitudes.php'\">Cancelar</button>
+							</div>
+						</form>
+					  </div>";
+					  
+				  
+		$str_datos.="</div>";
+		$str_datos.="</div>";
+		echo $str_datos;
+}
+if(  $_GET["op"]=="Usuario" ){
+	$str_datos.="<div class=\"card \">
+  <h5 class=\"card-header h5\">Edicion usuario</h5>
+  <div class=\"card-body\">";	
+  $val1 = $fila["UserName"];
+  $val2 = $fila["type"];
+  $_SESSION["idu"] = $idu;
+	
+						
+						$str_datos.="<form action=\"guardarCambiosUsuario.php\" method=\"post\">
+						  
+						  
+						  <div class=\"form-group\">
+							<label for=\"message-text\" class=\"col-form-label\">Nombre de usuario:</label>
+							<input type=\"text\" class=\"form-control\" name=\"UserName\" value=\"$val1\"></input>
+						  </div>
+						  <div>
+								<label>Tipo de usuario</label>
+								<select class=\"form-control\" name=\"tipoUsuario\" value=\"$val2\" >
+										<option value=\"Usuario\">Cliente</option>
+										<option value=\"Administrador\">Administrador</option>
+								</select>
+							</div>
+						  <div class=\"modal-footer\">
+								<input type=\"submit\" class=\"btn btn-primary\">
+								<button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'solicitudes.php'\">Cancelar</button>
+							</div>
+						</form>
+					  </div>";
+					  
+				  
+		$str_datos.="</div>";
+		$str_datos.="</div>";
+		echo $str_datos;
+}
+	if($_GET["op"]=="Usuario"){
+		
+$str_datos="<div class=\"card \">
+  <h5 class=\"card-header h5\">creditos usuario</h5>
+  <div class=\"card-body\">";	
+	
+
 
 $str_datos.='<table  class="table table-dark" >';
 $str_datos.='<thead>';
 $str_datos.='<tr>';
 $str_datos.='<th scope=\"col\">Id prestamo</th>';
 $str_datos.='<th scope=\"col\">Tasa interes</th>';
-$str_datos.='<th scope=\"col\">Nombre de usuario </th>';
 $str_datos.='<th scope=\"col\">Cuota manejo</th>';
-$str_datos.='<th scope=\"col\">Aprobar</th>';
-$str_datos.='<th scope=\"col\">Rechazar</th>';
+$str_datos.='<th scope=\"col\">Editar</th>';
 $str_datos.='</tr>';
 $str_datos.='</thead>';
 $str_datos.='<tbody>';
-$sql = "SELECT c.Id, c.tasaInteres, u.UserName , c.cuotaManejo FROM credito c inner join usuario u on c.idUsuario = u.ID  where aprobado = false ";
+$sql = "SELECT c.Id, c.tasaInteres, c.cuotaManejo FROM credito c inner join usuario u on c.idUsuario = u.ID  where aprobado = true and u.ID = $idu ";
 $resultado = mysqli_query($con,$sql);
 while($fila = mysqli_fetch_array($resultado)) {
 $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
-$str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['UserName']."</td>";
+$str_datos.= "<td>".$fila['tasaInteres']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Aprobar</button></td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Editar</button></td>";
 $str_datos.= "</tr>";
 }
 $str_datos.='</tbody>';
 $str_datos.= "</table>";
-echo $str_datos;
-mysqli_close($con);
-?>
-</div>
-</div>
+
+$str_datos.="</div>";
+$str_datos.="</div>";
 
 
-<div class="card ">
-  <h5 class="card-header h5">Solicitudes tarjeta de credito </h5>
-  <div class="card-body">
-<?php
+$str_datos.="<div class=\"card \">";
+$str_datos.="  <h5 class=\"card-header h5\">tarjetas de credito </h5>";
+$str_datos.=" <div class=\"card-body\">";
 
-include_once dirname(__FILE__) . '../../Configuracion/config.php';
-$str_datos = "";
-$con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
-if (mysqli_connect_errno()) {
-$str_datos.= "Error en la conexión: " . mysqli_connect_error();
-}
+
 
 $str_datos.='<table  class="table table-dark" >';
 $str_datos.='<thead>';
 $str_datos.='<tr>';
 $str_datos.='<th scope=\"col\">Id Tarjeta</th>';
-$str_datos.='<th scope=\"col\">nombre de usuario </th>';
-$str_datos.='<th scope=\"col\">Cuota manejo</th>';
-$str_datos.='<th scope=\"col\">Aprobar</th>';
-$str_datos.='<th scope=\"col\">Rechazar</th>';
+$str_datos.='<th scope=\"col\">cupo maximo </th>';
+$str_datos.='<th scope=\"col\">sobrecupo </th>';
+$str_datos.='<th scope=\"col\">cuota de manejo </th>';
+$str_datos.='<th scope=\"col\">Tasa interes</th>';
+$str_datos.='<th scope=\"col\">Editar</th>';
 $str_datos.='</tr>';
 $str_datos.='</thead>';
 $str_datos.='<tbody>';
-$sql = "SELECT  c.Id ,o.UserName , c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
- c.aprobada = false ";
+$sql = "SELECT  c.Id ,c.cupoMaximo,c.sobrecupo,c.tasaInteres, c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
+ aprobada = true and u.UserID = $idu ";
 
 $resultado = mysqli_query($con,$sql);
 
 while($fila = mysqli_fetch_array($resultado)) {
 $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
-$str_datos.= "<td>".$fila['UserName']."</td>";
+$str_datos.= "<td>".$fila['cupoMaximo']."</td>";
+$str_datos.="<td>".$fila['sobrecupo']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=tarj'\">Aprobar</button></td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
+$str_datos.="<td>".$fila['tasaInteres']."</td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=tarj'\">Editar</button></td>";
 $str_datos.= "</tr>";
 }
 $str_datos.='</tbody>';
 $str_datos.= "</table>";
+
+
+$str_datos.="</div>";
+$str_datos.="</div>";
 echo $str_datos;
 mysqli_close($con);
-?>
-</div>
-</div>
+}
+if($_GET["op"]=="visi"){
+$str_datos = "";
+$str_datos.="<div class=\"card\">";
+$str_datos.="  <h5 class=\"card-header h5\">credito Visitantes</h5>
+  <div class=\"card-body\">";
 
-<div class="card">
-  <h5 class="card-header h5">Solicitudes credito Visitantes</h5>
-  <div class="card-body">
-<?php
 
 include_once dirname(__FILE__) . '../../Configuracion/config.php';
-$str_datos = "";
+
 $con = mysqli_connect(HOST_DB, USUARIO_DB, USUARIO_PASS, NOMBRE_DB);
 if (mysqli_connect_errno()) {
 $str_datos.= "Error en la conexión: " . mysqli_connect_error();
 }
-
+$idu = $_GET["idu"];
 $str_datos.='<table  class="table table-dark" >';
 $str_datos.='<thead>';
 $str_datos.='<tr>';
 $str_datos.='<th scope=\"col\">Id prestamo</th>';
 $str_datos.='<th scope=\"col\">Tasa interes</th>';
-$str_datos.='<th scope=\"col\">Cedula </th>';
 $str_datos.='<th scope=\"col\">Cuota manejo</th>';
-$str_datos.='<th scope=\"col\">Aprobar</th>';
-$str_datos.='<th scope=\"col\">Rechazar</th>';
+$str_datos.='<th scope=\"col\">Editar</th>';
 $str_datos.='</tr>';
 $str_datos.='</thead>';
 $str_datos.='<tbody>';
-$sql = "SELECT c.Id, c.tasaInteres, u.cedula , c.cuotaManejo FROM credito c inner join visitante u on u.cedula = c.cedulaVisitante where c.aprobado = false ";
+$sql = "SELECT c.Id, c.tasaInteres , c.cuotaManejo , aprobado FROM credito c inner join visitante u on u.cedula = c.cedulaVisitante where  c.cedulaVisitante = $idu";
 $resultado = mysqli_query($con,$sql);
 while($fila = mysqli_fetch_array($resultado)) {
 $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
-$str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['cedula']."</td>";
+$str_datos.= "<td>".$fila['tasaInteres']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Aprobar</button></td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Editar</button></td>";
 $str_datos.= "</tr>";
 }
-$str_datos.='</tbody>';
+$str_datos.="</tbody>";
 $str_datos.= "</table>";
+
+
+$str_datos.="</div>";
+$str_datos.="</div>";
 echo $str_datos;
 mysqli_close($con);
-?>
-</div>
-</div>
+}
 
-
-<?php
 	
 ?>
 
