@@ -77,6 +77,17 @@
             return $this->conection;
         }
 
+        public function guardaTransaccion($BancoOrigen, $CuentaOrigen, $CuentaDestino, $Costo, $Valor){
+            $sql = "insert into transacciones (BancoOrigen, CuentaOrigen, CuentaDestino, Costo, ValorTransaccion) values ($BancoOrigen, $CuentaOrigen, $CuentaDestino, $Costo, $Valor)";
+            $resultado = mysqli_query($this->getConection(), $sql);
+            if($resultado){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
         public function registro($userName, $password, $type){
             if($this->usuarioExiste($userName) == true){
                 return false;
