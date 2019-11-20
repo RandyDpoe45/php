@@ -88,12 +88,12 @@
             }
         }
 
-        public function registro($userName, $password, $type){
+        public function registro($userName, $password, $type, $email){
             if($this->usuarioExiste($userName) == true){
                 return false;
             }
             else{
-                $sql = "insert into Usuario (UserName, Password, type) values ('$userName', '$password', '$type')";
+                $sql = "insert into Usuario (UserName, Password, type, Email) values ('$userName', '$password', '$type', '$email')";
                 $resultado = mysqli_query($this->getConection(), $sql);
 
                 if($resultado){
