@@ -15,6 +15,7 @@
     include_once dirname(__FILE__).'\..\Operaciones\retiro.php';
     include_once dirname(__FILE__).'\..\Operaciones\consignacion.php';
     include_once dirname(__FILE__).'\..\Operaciones\comprarTC.php';
+    include_once dirname(__FILE__).'\..\Operaciones\Randy.php';
 ?>
 
 </main>
