@@ -61,7 +61,7 @@
     </nav>
 <?php
     include_once dirname(__FILE__).'\..\Vistas\centroMensajes.php';
-
+    include_once dirname(__FILE__).'\finDeMes.php';
 ?>
 
 </main>
