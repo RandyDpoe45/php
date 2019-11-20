@@ -88,9 +88,7 @@ CREATE TABLE Transacciones(
 	CuentaDestino INT,
 	Costo float DEFAULT 0,
 	ValorTransaccion float DEFAULT 0,
-	FechaCompra TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-	FOREIGN KEY (CuentaOrigen) REFERENCES cuentaahorros (NumCuenta),
-	FOREIGN KEY (CuentaDestino) REFERENCES cuentaahorros (NumCuenta)
+	FechaCompra TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 insert into Usuario(UserName, Password, type) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');

@@ -77,8 +77,8 @@
             return $this->conection;
         }
 
-        public function guardaTransaccion($BancoOrigen, $CuentaOrigen, $CuentaDestino, $Costo, $Valor){
-            $sql = "insert into transacciones (BancoOrigen, CuentaOrigen, CuentaDestino, Costo, ValorTransaccion) values ($BancoOrigen, $CuentaOrigen, $CuentaDestino, $Costo, $Valor)";
+        public function guardaTransaccion($BancoOrigen, $CuentaOrigen, $CuentaDestino,$tipoCuenta, $Costo, $Valor){
+            $sql = "insert into transacciones (BancoOrigen, CuentaOrigen, CuentaDestino, TipoCuenta,  Costo, ValorTransaccion) values ($BancoOrigen, $CuentaOrigen, $CuentaDestino,$tipoCuenta, $Costo, $Valor)";
             $resultado = mysqli_query($this->getConection(), $sql);
             if($resultado){
                 return true;
