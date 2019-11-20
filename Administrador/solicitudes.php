@@ -7,8 +7,10 @@
 <title></title>
 </head>
 <body class="bg-light">
+<main role="main" class="container mt-3 pt-5">
+<div class="my-3 p-3 bg-white rounded box-shadow">
 	<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Gestor BD</a>
+      <a class="navbar-brand" href="#">Panel de administracion</a>
       <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -16,10 +18,10 @@
       <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#" >Solicitudes pendientes</a>
+            <a class="nav-link" href="Administrador/solicitudes.php" >Solicitudes de credito pendientes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" >Centro Mensajes</a>
+            <a class="nav-link" href="index.php" >Centro Mensajes</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
@@ -30,18 +32,37 @@
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <ul class="navbar-nav ml-auto">
+
+        <?php
+          if(!isset($_SESSION["userName"])){
+                echo "<li class=\"nav-item active\">
+                        <a class=\"nav-link\" href=\"Vistas/login.php\">Iniciar Sesión <span class=\"sr-only\">(current)</span></a>
+                      </li>
+                      <li class=\"nav-item active\">
+                        <a class=\"nav-link\" href=\"Vistas/registro.php\">Registrarse <span class=\"sr-only\">(current)</span></a>
+                      </li>";
+          }
+          else{
+            $usuario = $_SESSION["userName"];
+            echo "<li class=\"nav-item active\">
+                    <a class=\"nav-link\" href=\"\">Bienvenido $usuario <span class=\"sr-only\">(current)</span></a>
+                  </li>
+                  <li class=\"nav-item active\">
+                    <a class=\"nav-link\" href=\"Vistas/logOut.php\">Cerrar Sesión <span class=\"sr-only\">(current)</span></a>
+                  </li>";
+          }
+        ?>
+        
+
+
+    </ul>
       </div>
     </nav>
+<div class="card ">
+  <h5 class="card-header h5">Solicitudes credito usuarios</h5>
+  <div class="card-body">	
 	
-<main role="main" class="container mt-3 pt-5">
-<div class="my-3 p-3 bg-white rounded box-shadow">
-<div class="card">
-  <h5 class="card-header h5">Solicitudes credito clientes</h5>
-  <div class="card-body">
 <?php
 session_start();
 include_once dirname(__FILE__) . '../../Configuracion/config.php';
@@ -70,7 +91,7 @@ $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
 $str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['UserName']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "'\">Aprobar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Aprobar</button></td>";
 $str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
 $str_datos.= "</tr>";
 }
@@ -83,7 +104,7 @@ mysqli_close($con);
 </div>
 
 
-<div class="card">
+<div class="card ">
   <h5 class="card-header h5">Solicitudes tarjeta de credito </h5>
   <div class="card-body">
 <?php
@@ -98,8 +119,7 @@ $str_datos.= "Error en la conexión: " . mysqli_connect_error();
 $str_datos.='<table  class="table table-dark" >';
 $str_datos.='<thead>';
 $str_datos.='<tr>';
-$str_datos.='<th scope=\"col\">Id prestamo</th>';
-$str_datos.='<th scope=\"col\">Tasa interes</th>';
+$str_datos.='<th scope=\"col\">Id Tarjeta</th>';
 $str_datos.='<th scope=\"col\">nombre de usuario </th>';
 $str_datos.='<th scope=\"col\">Cuota manejo</th>';
 $str_datos.='<th scope=\"col\">Aprobar</th>';
@@ -107,17 +127,17 @@ $str_datos.='<th scope=\"col\">Rechazar</th>';
 $str_datos.='</tr>';
 $str_datos.='</thead>';
 $str_datos.='<tbody>';
-$sql = "SELECT  o.Username , c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
+$sql = "SELECT  c.Id ,o.UserName , c.cuotaManejo FROM tarjetacredito c inner join cuentaahorros u on u.NumCuenta  = c.idCuenta inner join usuario o on u.UserID = o.Id where
  c.aprobada = false ";
 
 $resultado = mysqli_query($con,$sql);
-echo mysqli_errno($con).":".mysqli_error($con);
+
 while($fila = mysqli_fetch_array($resultado)) {
 $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
-$str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['cedula']."</td>";
+$str_datos.= "<td>".$fila['UserName']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "'\">Aprobar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=tarj'\">Aprobar</button></td>";
 $str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
 $str_datos.= "</tr>";
 }
@@ -160,7 +180,7 @@ $str_datos.='<tr>';
 $str_datos.="<th scope=\"row\">".$fila['Id']."</th>";
 $str_datos.= "<td>".$fila['tasaInteres']."</td>"."<td>".$fila['cedula']."</td>";
 $str_datos.="<td>".$fila['cuotaManejo']."</td>";
-$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "'\">Aprobar</button></td>";
+$str_datos.= "<td><button type =\"button\" class =\"btn btn-success\" onclick=\"location.href = 'aprobar.php?credito=".$fila['Id']. "&op=cred'\">Aprobar</button></td>";
 $str_datos.= "<td><button type =\"button\" class =\"btn btn-danger\" onclick=\"location.href = 'rechazar.php?credito=".$fila['Id']. "'\">Rechazar</button></td>";
 $str_datos.= "</tr>";
 }

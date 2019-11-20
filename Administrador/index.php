@@ -21,7 +21,7 @@
             <a class="nav-link" href="Administrador/solicitudes.php" >Solicitudes de credito pendientes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.php" >Centro Mensajes</a>
+            <a class="nav-link" href="Administracion/edicionUsuarios.php" >Administracion Usuarios</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
