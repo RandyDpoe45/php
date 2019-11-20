@@ -30,6 +30,7 @@
                 $TasaInteres = $fila["tasaInteres"];
                 $CuotaManejo = $fila["cuotaManejo"];
                 $Aprobado = $fila["aprobado"];
+                
                 echo "<tr>";
                 echo "<th>$ID</th><th>$TasaInteres</th><th>$CuotaManejo</th><th>$Aprobado</th>";
                 echo "</tr>";

@@ -15,11 +15,16 @@
 		<form action="comprobarRegistro.php" method="post">
             <div class="form-group">
               <label >Nombre de usuario</label>
-              <input type="userName" class="form-control" name="userName" placeholder="Nombre de usuario">
+              <input type="userName" class="form-control" name="userName" placeholder="Nombre de usuario" required>
             </div>
             <div class="form-group">
               <label >Contraseña</label>
-              <input type="password" class="form-control" name="password" placeholder="Contraseña">
+              <input type="password" class="form-control" name="password" placeholder="Contraseña" required>
+            </div>
+
+            <div class="form-group">
+              <label >Correo</label>
+              <input type="email" class="form-control" name="email" placeholder="Email" required>
             </div>
 
             <div>

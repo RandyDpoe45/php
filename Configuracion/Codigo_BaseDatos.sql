@@ -12,6 +12,7 @@ CREATE TABLE Usuario(
     ID INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(ID),
     UserName VARCHAR(255) ,
+	Email VARCHAR(255),
     Password VARCHAR(255),
     type VARCHAR(255),
 	CONSTRAINT uc_name unique (UserName)
@@ -93,5 +94,5 @@ CREATE TABLE Transacciones(
 	FOREIGN KEY (CuentaDestino) REFERENCES cuentaahorros (NumCuenta)
 );
 
-insert into Usuario(UserName, Password, type) values ('Diego', 'prz/88u.WZ0LU', 'Usuario');
-insert into Usuario(UserName, Password, type) values ('Admin', 'prz/88u.WZ0LU', 'Administrador');
+insert into Usuario(UserName, Password, type, Email) values ('Diego', 'prz/88u.WZ0LU', 'Usuario','diegobarajas102030@gmail.com');
+insert into Usuario(UserName, Password, type, Email) values ('Admin', 'prz/88u.WZ0LU', 'Administrador', 'diegobarajas102030@gmail.com');
