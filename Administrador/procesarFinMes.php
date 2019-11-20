@@ -11,12 +11,14 @@
 
 <?php
 
+
     include_once dirname(__FILE__).'\..\Configuracion\BD.php';
     $dataBase = new DB();
-
-    $sqlTransacciones = "SELECT * from transacciontarjeta INNER JOIN tarjetacredito on transacciontarjeta.TarjetaID = tarjetacredito.ID INNER JOIN cuentaahorros ON tarjetacredito.idCuenta = cuentaahorros.NumCuenta";
+    
+    $sqlTransacciones = "SELECT * from transacciontarjeta INNER JOIN tarjetacredito on transacciontarjeta.TarjetaID = tarjetacredito.ID INNER JOIN cuentaahorros ON tarjetacredito.idCuenta = cuentaahorros.NumCuenta INNER JOIN usuario ON cuentaahorros.UserID = usuario.ID";
     $resultadoTransacciones = mysqli_query($dataBase->getConection(), $sqlTransacciones);
     while($transaccion = mysqli_fetch_array($resultadoTransacciones)) {
+
         $transaccionID = $transaccion["ID"];
         $TarjetaID = $transaccion["TarjetaID"];
         $Cuotas = $transaccion["Cuotas"];
@@ -28,21 +30,21 @@
         $Email = $transaccion["Email"];
         $idCuenta = $transaccion["idCuenta"];
 
-        echo "FechaCompra";
+        
 
         if(true){//primer mes de compra
             $totalPagar = ($Valor/$Cuotas)+$cuotaManejo;
         }
         else{
-            $totalPagar = (($Valor/$Cuotas)*$tasaInteres)+$cuotaManejo;
+            $totalPagar = (($Valor/$Cuotas)*$tasaInteres)+$cuotaManejo+($Valor/$Cuotas);
         }
         if($JaveCoins < $totalPagar){
             sendMail($Email, "Saldo Insuficiente en la cuenta $idCuenta para pagar la tarjeta $TarjetaID CUIDADO");
         }
         else{
-            $dataBase->retiroCuenta($idCuenta, $totalPagar, "JaveCoins");
+            $dataBase->retiroCuenta($idCuenta, $Valor/$Cuotas, "JaveCoins");
         }
-        if(true){//ultimos mes
+        if(($Valor - ($Valor/$Cuotas)) == 0){//ultimos mes
             $sql = "DELETE from transacciontarjeta where ID = $transaccionID";
             $resultado = mysqli_query($dataBase->getConection(), $sql);
         }
@@ -50,19 +52,20 @@
 
     }
 
-    $saldoCuenta = 
 
-    $dataBase = new DB();
-
-    $conexion = $dataBase->getConection();
-
-    $sql = "SELECT * FROM transacciontarjeta";
-    $resultado = mysqli_query($conexion, $sql);
+    $sql = "SELECT * FROM cuentaahorros";
+    $resultado = mysqli_query($dataBase->getConection(), $sql);
     while($fila = mysqli_fetch_array($resultado)) {
-        $aux = $fila["FechaCompra"];
-        echo "<p> $aux </p>";
+        $NumCuenta = $fila["NumCuenta"];
+        $JaveCoins = $fila["JaveCoins"];
+        $cuotaManejo = $fila["cuotaManejo"];
+
+        $valorTotal = (($JaveCoins*$cuotaManejo)+$JaveCoins);
+        $sql = "UPDATE cuentaahorros set JaveCoins = $valorTotal where NumCuenta = $NumCuenta";
+        mysqli_query($dataBase->getConection(), $sql);
     }
 
+    echo "<script>alet(\"Acciones de fin de mes realizadas con exito\")</script>";
     //header("location: ../index.php");
 ?>
 
